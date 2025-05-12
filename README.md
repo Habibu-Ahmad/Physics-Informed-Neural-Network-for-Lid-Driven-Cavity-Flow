@@ -17,3 +17,15 @@ The PINN solves these steady 2D flow equations:
 ### Continuity (Mass Conservation):
 ```math
 \frac{\partial u}{\partial x} + \frac{\partial v}{\partial y} = 0
+\begin{aligned}
+u\frac{\partial u}{\partial x} + v\frac{\partial u}{\partial y} &= -\frac{1}{\rho}\frac{\partial p}{\partial x} + \nu\left(\frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2}\right) \\
+u\frac{\partial v}{\partial x} + v\frac{\partial v}{\partial y} &= -\frac{1}{\rho}\frac{\partial p}{\partial y} + \nu\left(\frac{\partial^2 v}{\partial x^2} + \frac{\partial^2 v}{\partial y^2}\right)
+\end{aligned}
+
+u = \frac{\partial \psi}{\partial y}, \quad v = -\frac{\partial \psi}{\partial x}
+
+
+## References
+Ghia, U., Ghia, K. N., & Shin, C. T. (1982). "High-Re solutions for incompressible flow using the Navier-Stokes equations and a multigrid method." Journal of Computational Physics, 48(3), 387-411.
+
+Raissi, M., Perdikaris, P., & Karniadakis, G. E. (2019). "Physics-informed neural networks: A deep learning framework for solving forward and inverse problems involving nonlinear partial differential equations." Journal of Computational Physics, 378, 686-707.
