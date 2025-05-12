@@ -14,9 +14,9 @@ This project implements a **Physics-Informed Neural Network (PINN)** to simulate
 The PINN solves the following equations for steady 2D flow:  
 
 1. **Continuity (Incompressibility):**  
-   $
+   $$
    \frac{\partial u}{\partial x} + \frac{\partial v}{\partial y} = 0 \quad \text{(Automatically satisfied by stream function ψ)}
-   $  
+   $$  
 
 2. **Momentum Equations:**  
    \[
