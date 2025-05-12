@@ -25,7 +25,4 @@ u\frac{\partial v}{\partial x} + v\frac{\partial v}{\partial y} &= -\frac{1}{\rh
 u = \frac{\partial \psi}{\partial y}, \quad v = -\frac{\partial \psi}{\partial x}
 ```math
 
-## References
-Ghia, U., Ghia, K. N., & Shin, C. T. (1982). "High-Re solutions for incompressible flow using the Navier-Stokes equations and a multigrid method." Journal of Computational Physics, 48(3), 387-411.
 
-Raissi, M., Perdikaris, P., & Karniadakis, G. E. (2019). "Physics-informed neural networks: A deep learning framework for solving forward and inverse problems involving nonlinear partial differential equations." Journal of Computational Physics, 378, 686-707.
