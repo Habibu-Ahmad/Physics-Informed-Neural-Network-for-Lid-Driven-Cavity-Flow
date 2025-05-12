@@ -19,12 +19,12 @@ Physics-Informed Neural Network (PINN) implementation for solving 2D steady inco
 $$\nabla \cdot \mathbf{u} = 0 \quad \Rightarrow \quad \frac{\partial u}{\partial x} + \frac{\partial v}{\partial y} = 0$$
 
 **Momentum equations**:
-$$
+[
 \begin{cases}
 u\frac{\partial u}{\partial x} + v\frac{\partial u}{\partial y} = -\frac{1}{\rho}\frac{\partial p}{\partial x} + \nu\left(\frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2}\right) \\
 u\frac{\partial v}{\partial x} + v\frac{\partial v}{\partial y} = -\frac{1}{\rho}\frac{\partial p}{\partial y} + \nu\left(\frac{\partial^2 v}{\partial x^2} + \frac{\partial^2 v}{\partial y^2}\right)
 \end{cases}
-$$
+]
 
 **Stream function formulation** (automatically satisfies continuity):
 $$
