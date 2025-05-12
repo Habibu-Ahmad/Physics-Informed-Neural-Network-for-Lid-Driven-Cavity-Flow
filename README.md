@@ -1,48 +1,51 @@
-# Unified PINN for Steady Navier-Stokes Equations
+# Physics-Informed Neural Network (PINN) for Lid-Driven Cavity Flow  
+**A mesh-free solver for the incompressible Navier-Stokes equations using deep learning.**  
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/yourusername/reponame/blob/main/main.ipynb)
+##  Overview  
+This project implements a **Physics-Informed Neural Network (PINN)** to simulate 2D steady-state **lid-driven cavity flow**, a classic computational fluid dynamics (CFD) benchmark. The PINN solves the Navier-Stokes equations *without traditional discretization methods* (e.g., finite differences), using automatic differentiation to enforce physics constraints directly in the neural network's loss function.  
 
-Physics-Informed Neural Network (PINN) implementation for solving 2D steady incompressible Navier-Stokes equations using TensorFlow. Designed for lid-driven cavity flow simulation.
+**Key Features:**  
+- Solves the **incompressible Navier-Stokes equations** for stream function (ψ) and pressure (p).  
+- Enforces **boundary conditions** (no-slip walls, moving lid) via physics-informed loss terms.  
+- Uses **L-BFGS optimization** for training, avoiding stochastic gradient descent.  
+- Validates results against Ghia et al.'s benchmark data (Re=100).  
 
-## Table of Contents
-- [Mathematical Formulation](#mathematical-formulation)
-- [Network Architecture](#network-architecture)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Results Visualization](#results-visualization)
-- [References](#references)
+##  Governing Equations  
+The PINN solves the following equations for steady 2D flow:  
 
-## Mathematical Formulation
+1. **Continuity (Incompressibility):**  
+   \[
+   \frac{\partial u}{\partial x} + \frac{\partial v}{\partial y} = 0 \quad \text{(Automatically satisfied by stream function ψ)}
+   \]  
 
-### Governing Equations
-**Continuity equation**:
-$$\nabla \cdot \mathbf{u} = 0 \quad \Rightarrow \quad \frac{\partial u}{\partial x} + \frac{\partial v}{\partial y} = 0$$
+2. **Momentum Equations:**  
+   \[
+   \begin{aligned}
+   u \frac{\partial u}{\partial x} + v \frac{\partial u}{\partial y} &= -\frac{1}{\rho} \frac{\partial p}{\partial x} + \nu \left( \frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2} \right), \\
+   u \frac{\partial v}{\partial x} + v \frac{\partial v}{\partial y} &= -\frac{1}{\rho} \frac{\partial p}{\partial y} + \nu \left( \frac{\partial^2 v}{\partial x^2} + \frac{\partial^2 v}{\partial y^2} \right),
+   \end{aligned}
+   \]  
+   where:  
+   - \(u, v\) = velocity components (derived from ψ: \(u = \partial \psi / \partial y\), \(v = -\partial \psi / \partial x\)),  
+   - \(p\) = pressure,  
+   - \(\rho\) = density (set to 1),  
+   - \(\nu\) = kinematic viscosity (set to 0.01).  
 
-**Momentum equations**:
-[
-\begin{cases}
-u\frac{\partial u}{\partial x} + v\frac{\partial u}{\partial y} = -\frac{1}{\rho}\frac{\partial p}{\partial x} + \nu\left(\frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2}\right) \\
-u\frac{\partial v}{\partial x} + v\frac{\partial v}{\partial y} = -\frac{1}{\rho}\frac{\partial p}{\partial y} + \nu\left(\frac{\partial^2 v}{\partial x^2} + \frac{\partial^2 v}{\partial y^2}\right)
-\end{cases}
-]
+3. **Boundary Conditions:**  
+   - **Walls (bottom/left/right):** \(u = v = 0\), \(\psi = \text{constant}\).  
+   - **Lid (top):** \(u = 1\) (driven velocity), \(v = 0\).  
 
-**Stream function formulation** (automatically satisfies continuity):
-$$
-u = \frac{\partial \psi}{\partial y}, \quad v = -\frac{\partial \psi}{\partial x}
-$$
+## 🛠️ Code Structure  
+| File/Class          | Description                                                                 |  
+|---------------------|-----------------------------------------------------------------------------|  
+| **`GradientLayer`** | Custom TensorFlow layer to compute derivatives of ψ and p via `GradientTape`. |  
+| **`Network`**       | Builds the neural network (MLP) predicting ψ and p. Supports `tanh`/`swish`/`mish` activations. |  
+| **`L_BFGS_B`**      | Wrapper for SciPy's L-BFGS-B optimizer to train the PINN.                   |  
+| **`PINN`**          | Combines the NN and physics, computes Navier-Stokes residuals and BC losses. |  
+| **`uv()`**          | Utility function to derive velocities \(u, v\) from ψ.                      |  
+| **`contour()`**     | Plots predicted fields (ψ, p, u, v) with Matplotlib.                        |  
 
-### Boundary Conditions (Lid-Driven Cavity)
-| Boundary        | ψ      | u         | v     |
-|-----------------|--------|-----------|-------|
-| Top wall (y=1)  | 0      | u₀        | 0     |
-| Other walls     | 0      | 0         | 0     |
-
-## Network Architecture
-
-```python
-# Neural Network Structure
-Network(
-  layers=[32, 16, 16, 32],  # Hidden layers
-  activation='swish',        # Activation function
-  num_outputs=2              # ψ and p
-)
+## 🚀 Usage  
+1. **Install Dependencies**:  
+   ```bash
+   pip install tensorflow numpy scipy matplotlib
